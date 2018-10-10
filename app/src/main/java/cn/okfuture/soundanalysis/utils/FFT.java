@@ -1,5 +1,7 @@
 package cn.okfuture.soundanalysis.utils;
 
+import android.util.Log;
+
 /**
  * 快速傅里叶变换
  * Created by shine on 18-10-9.
@@ -66,6 +68,49 @@ public class FFT {
             }
         }
         return result;
+    }
+
+    /**
+     * 获取最大的频率
+     * @param data
+     * @param SAMPLE_RATE
+     * @param FFT_N
+     * @return
+     */
+    public  double GetFrequency(short[] data, int SAMPLE_RATE, int FFT_N) {
+        Log.i("FFT", "GetFrequency");
+        if (data.length < FFT_N) {
+            throw new RuntimeException("Data length lower than " + FFT_N);
+        }
+        Complex[] f = new Complex[FFT_N];
+        for (int i = 0; i < FFT_N; i++) {
+            f[i] = new Complex(data[i], 0); //实部为正弦波FFT_N点采样，赋值为1
+            //虚部为0
+        }
+
+        f = fft(f);                                        //进行快速福利叶变换
+//        String str = "";
+//        for(int i = 0;i<FFT_N;i++){
+//            str+=f[i].toString()+" ";
+//        }
+//        Log.i("FFT","fft: "+str);
+        double[] s = new double[FFT_N / 2];
+//        str = "";
+        for (int i = 0; i < FFT_N / 2; i++) {
+            s[i] = f[i].getMod();
+//            str += ""+s[i]+" ";
+        }
+//        Log.i("FFT","s: "+str);
+
+        int fmax = 0;
+        for (int i = 1; i < FFT_N / 2; i++) {  //利用FFT的对称性，只取前一半进行处理
+            if (s[i] > s[fmax])
+                fmax = i;                          //计算最大频率的序号值
+        }
+//        Log.i("FFT","max index:"+fmax+" fft:"+f[fmax]+" s:"+s[fmax]);
+        double fre = fmax * (double) SAMPLE_RATE / FFT_N;
+        Log.i("FFT", "fre:" + fre);
+        return fre;
     }
 
 }

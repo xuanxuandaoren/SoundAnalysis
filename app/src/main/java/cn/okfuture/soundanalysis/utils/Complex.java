@@ -74,5 +74,14 @@ public class Complex {
         return new Complex(getReal() - other.getReal(), getImage() - other.getImage());
     }
 
+    /**
+     * 求模值
+     *
+     * @return
+     */
+    public final double getMod() {
+        return Math.sqrt(this.getReal() * this.getReal() + this.getImage() * this.getImage());
+    }
+
 
 }

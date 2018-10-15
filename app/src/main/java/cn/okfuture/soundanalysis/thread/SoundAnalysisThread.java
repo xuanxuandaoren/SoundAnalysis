@@ -82,7 +82,7 @@ public class SoundAnalysisThread extends Thread {
             if (audioRecord.getState() == AudioRecord.STATE_INITIALIZED) {
                 Log.i("xiaozhu----------", "STATE_INITIALIZED");
                 sampleRate = SAMPLE_RATES_LIST[i];
-                sampleCount = 4 * 1024;//SAMPLE_COUNT[i];
+                sampleCount =  1024;//SAMPLE_COUNT[i];
                 break;
             }
         }

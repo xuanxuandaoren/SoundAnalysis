@@ -72,13 +72,14 @@ public class FFT {
 
     /**
      * 获取最大的频率
+     *
      * @param data
      * @param SAMPLE_RATE
      * @param FFT_N
      * @return
      */
-    public  double GetFrequency(short[] data, int SAMPLE_RATE, int FFT_N) {
-        Log.i("FFT", "GetFrequency");
+    public double getFrequency(byte[] data, int SAMPLE_RATE, int FFT_N) {
+
         if (data.length < FFT_N) {
             throw new RuntimeException("Data length lower than " + FFT_N);
         }
@@ -87,8 +88,25 @@ public class FFT {
             f[i] = new Complex(data[i], 0); //实部为正弦波FFT_N点采样，赋值为1
             //虚部为0
         }
+        String dataStr = "[";
+        for (int i = 0; i < f.length; i++) {
+            dataStr += f[i].getReal() + "-" + f[i].getImage() + ",   ";
+        }
+        dataStr += "]";
+
+        Log.i("xiaozhu----------before", "data==" + dataStr + ", SAMPLE_RATE==" + SAMPLE_RATE + ", FFT_N" + FFT_N);
 
         f = fft(f);                                        //进行快速福利叶变换
+
+        dataStr = "[";
+        for (int i = 0; i < f.length; i++) {
+            dataStr += f[i].getReal() + "-" + f[i].getImage() + ",   ";
+        }
+        dataStr += "]";
+
+        Log.i("xiaozhu----------afters", "data==" + dataStr + ", SAMPLE_RATE==" + SAMPLE_RATE + ", FFT_N" + FFT_N);
+
+
 //        String str = "";
 //        for(int i = 0;i<FFT_N;i++){
 //            str+=f[i].toString()+" ";

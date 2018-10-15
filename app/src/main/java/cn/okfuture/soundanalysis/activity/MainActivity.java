@@ -1,8 +1,13 @@
 package cn.okfuture.soundanalysis.activity;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +18,10 @@ import cn.okfuture.soundanalysis.domain.Sound;
 import cn.okfuture.soundanalysis.thread.SoundAnalysisThread;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    /**
+     * 声音请求权限信息
+     */
+    private static final int PERMISSION_AUDIORECORD = 2;
     /**
      * 声音信息
      */
@@ -84,10 +93,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } else {
                     btn_start.setText(R.string.stop);
                     btn_start.setSelected(true);
-                    startAnalysis();
+                    //判断是否有权限
+                    if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+                        //如果应用之前请求过此权限但用户拒绝的请求 ,此方法返回true
+                        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECORD_AUDIO)) {
+                            //这里可以写个对话框之类的项向用户解释为什么要申请权限，并在对话框的确认键后续再次申请权限
+                        } else {
+                            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, PERMISSION_AUDIORECORD);
+                        }
+
+                    } else {
+                        startAnalysis();
+                    }
+
                 }
 
                 break;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_AUDIORECORD) {
+            for (int i = 0; i < permissions.length; i++) {
+                if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                    startAnalysis();
+                }
+
+            }
         }
     }
 
@@ -96,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     private void startAnalysis() {
 
-        soundAnalysisThread=new SoundAnalysisThread(handler);
+        soundAnalysisThread = new SoundAnalysisThread(handler);
         soundAnalysisThread.start();
     }
 
@@ -104,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * 停止采集音频
      */
     private void stopAnalysis() {
-        if (soundAnalysisThread!=null){
+        if (soundAnalysisThread != null) {
             soundAnalysisThread.close();
         }
 

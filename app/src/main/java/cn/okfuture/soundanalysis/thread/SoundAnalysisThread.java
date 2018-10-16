@@ -9,6 +9,7 @@ import android.util.Log;
 
 import cn.okfuture.soundanalysis.activity.MainActivity;
 import cn.okfuture.soundanalysis.domain.Sound;
+import cn.okfuture.soundanalysis.utils.ColorUtils;
 import cn.okfuture.soundanalysis.utils.FFT;
 import cn.okfuture.soundanalysis.utils.VoiceUtil;
 
@@ -65,6 +66,7 @@ public class SoundAnalysisThread extends Thread {
 
         this.handler = handler;
         initAudioRecord();
+//        ColorUtils.initColors();
     }
 
     /**
@@ -82,7 +84,7 @@ public class SoundAnalysisThread extends Thread {
             if (audioRecord.getState() == AudioRecord.STATE_INITIALIZED) {
                 Log.i("xiaozhu----------", "STATE_INITIALIZED");
                 sampleRate = SAMPLE_RATES_LIST[i];
-                sampleCount =  1024;//SAMPLE_COUNT[i];
+                sampleCount = 1024;//SAMPLE_COUNT[i];
                 break;
             }
         }

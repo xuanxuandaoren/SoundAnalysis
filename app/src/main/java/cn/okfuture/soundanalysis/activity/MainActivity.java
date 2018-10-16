@@ -11,17 +11,23 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import cn.okfuture.soundanalysis.R;
 import cn.okfuture.soundanalysis.domain.Sound;
 import cn.okfuture.soundanalysis.thread.SoundAnalysisThread;
+import cn.okfuture.soundanalysis.utils.ColorUtils;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     /**
      * 声音请求权限信息
      */
     private static final int PERMISSION_AUDIORECORD = 2;
+    /**
+     * 音乐跳变临界点
+     */
+    private static final int FREQUENCY_CRITICAL = 200;
     /**
      * 声音信息
      */
@@ -39,6 +45,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * 声音分析
      */
     private SoundAnalysisThread soundAnalysisThread;
+    /**
+     * 当前的频率
+     */
+
+    private int currentFrequency;
 
     /**
      * 线程之间通讯
@@ -55,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
     };
+    private LinearLayout ll_content;
 
     /**
      * 更新背景
@@ -62,7 +74,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      * @param sound
      */
     private void updateBackground(Sound sound) {
-        tv_show.setText(String.format(getString(R.string.show_sound), sound.mFrequency, sound.mVolume));
+        int frequency = (int) sound.mFrequency;
+
+        if (frequency <= 0) {
+            return;
+        } else if (Math.abs(frequency - currentFrequency) < FREQUENCY_CRITICAL) {
+            currentFrequency++;
+        } else {
+            currentFrequency = frequency;
+        }
+
+        ll_content.setBackgroundColor(ColorUtils.COLOR_LIST_140[currentFrequency % 140]);
+
+//        tv_show.setText(String.format(getString(R.string.show_sound), sound.mFrequency, sound.mVolume));
 
     }
 
@@ -79,6 +103,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tv_show = (TextView) findViewById(R.id.tv_show);
 
         btn_start.setOnClickListener(this);
+        ll_content = (LinearLayout) findViewById(R.id.ll_content);
+        ll_content.setOnClickListener(this);
     }
 
     @Override

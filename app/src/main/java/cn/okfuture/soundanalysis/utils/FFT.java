@@ -94,7 +94,7 @@ public class FFT {
         }
         dataStr += "]";
 
-        Log.i("xiaozhu----------before", "data==" + dataStr + ", SAMPLE_RATE==" + SAMPLE_RATE + ", FFT_N" + FFT_N);
+//        Log.i("xiaozhu----------before", "data==" + dataStr + ", SAMPLE_RATE==" + SAMPLE_RATE + ", FFT_N" + FFT_N);
 
         f = fft(f);                                        //进行快速福利叶变换
 
@@ -104,7 +104,7 @@ public class FFT {
         }
         dataStr += "]";
 
-        Log.i("xiaozhu----------afters", "data==" + dataStr + ", SAMPLE_RATE==" + SAMPLE_RATE + ", FFT_N" + FFT_N);
+//        Log.i("xiaozhu----------afters", "data==" + dataStr + ", SAMPLE_RATE==" + SAMPLE_RATE + ", FFT_N" + FFT_N);
 
 
 //        String str = "";

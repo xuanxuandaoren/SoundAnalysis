@@ -2,6 +2,7 @@ package cn.okfuture.soundanalysis.activity;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -27,7 +28,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /**
      * 音乐跳变临界点
      */
-    private static final int FREQUENCY_CRITICAL = 400;
+    private static final int FREQUENCY_CRITICAL = 500;
+    /**
+     * 最大的声音
+     */
+    private static final double MAX_SOUND = 3000;
+
     /**
      * 声音信息
      */
@@ -84,9 +90,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             currentFrequency = frequency;
         }
 
-        ll_content.setBackgroundColor(ColorUtils.COLOR_LIST_140[currentFrequency % 140]);
+        int alpha = (int) (255 * sound.mVolume / MAX_SOUND);
+        if (alpha > 255) {
+            alpha = 255;
+        }
+        int color = ColorUtils.COLOR_LIST_140[currentFrequency % 140];
+        ll_content.setBackgroundColor(Color.argb(alpha, Color.red(color), Color.green(color), Color.blue(color)));
 
-        tv_show.setText(String.format(getString(R.string.show_sound),currentFrequency*1.0f, sound.mVolume));
+        tv_show.setText(String.format(getString(R.string.show_sound), currentFrequency * 1.0f, sound.mVolume));
 
     }
 

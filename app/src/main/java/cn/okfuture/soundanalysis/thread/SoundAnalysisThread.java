@@ -118,10 +118,13 @@ public class SoundAnalysisThread extends Thread {
 
 
                 try {
-                    if (audioRecord.getState() == AudioRecord.STATE_INITIALIZED)
+                    if (audioRecord.getState() == AudioRecord.STATE_INITIALIZED) {
                         audioRecord.stop();
+                    }
                     Thread.sleep(20);
-                    audioRecord.startRecording();
+                    if (audioRecord.getState() == AudioRecord.STATE_INITIALIZED) {
+                        audioRecord.startRecording();
+                    }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

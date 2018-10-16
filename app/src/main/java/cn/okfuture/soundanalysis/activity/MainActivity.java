@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /**
      * 音乐跳变临界点
      */
-    private static final int FREQUENCY_CRITICAL = 200;
+    private static final int FREQUENCY_CRITICAL = 400;
     /**
      * 声音信息
      */
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         ll_content.setBackgroundColor(ColorUtils.COLOR_LIST_140[currentFrequency % 140]);
 
-//        tv_show.setText(String.format(getString(R.string.show_sound), sound.mFrequency, sound.mVolume));
+        tv_show.setText(String.format(getString(R.string.show_sound),currentFrequency*1.0f, sound.mVolume));
 
     }
 
